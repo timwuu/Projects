@@ -1,0 +1,16 @@
+C:\Users\Guest Century\AppData\Local\Temporary Projects\BT HC04\bin\Release\BT HC04.exe
+C:\Users\Guest Century\AppData\Local\Temporary Projects\BT HC04\bin\Release\BT HC04.pdb
+C:\Users\Guest Century\AppData\Local\Temporary Projects\BT HC04\obj\Release\ResolveAssemblyReference.cache
+C:\Users\Guest Century\AppData\Local\Temporary Projects\BT HC04\obj\Release\BT_HC04.Form1.resources
+C:\Users\Guest Century\AppData\Local\Temporary Projects\BT HC04\obj\Release\BT_HC04.Properties.Resources.resources
+C:\Users\Guest Century\AppData\Local\Temporary Projects\BT HC04\obj\Release\BT HC04.csproj.GenerateResource.Cache
+C:\Users\Guest Century\AppData\Local\Temporary Projects\BT HC04\obj\Release\BT HC04.exe
+C:\Users\Guest Century\AppData\Local\Temporary Projects\BT HC04\obj\Release\BT HC04.pdb
+C:\Users\Guest Century\Documents\Visual Studio 2008\Projects\BT HC04\BT HC04\bin\Release\BT HC04.exe
+C:\Users\Guest Century\Documents\Visual Studio 2008\Projects\BT HC04\BT HC04\bin\Release\BT HC04.pdb
+C:\Users\Guest Century\Documents\Visual Studio 2008\Projects\BT HC04\BT HC04\obj\Release\ResolveAssemblyReference.cache
+C:\Users\Guest Century\Documents\Visual Studio 2008\Projects\BT HC04\BT HC04\obj\Release\BT_HC04.Form1.resources
+C:\Users\Guest Century\Documents\Visual Studio 2008\Projects\BT HC04\BT HC04\obj\Release\BT_HC04.Properties.Resources.resources
+C:\Users\Guest Century\Documents\Visual Studio 2008\Projects\BT HC04\BT HC04\obj\Release\BT HC04.csproj.GenerateResource.Cache
+C:\Users\Guest Century\Documents\Visual Studio 2008\Projects\BT HC04\BT HC04\obj\Release\BT HC04.exe
+C:\Users\Guest Century\Documents\Visual Studio 2008\Projects\BT HC04\BT HC04\obj\Release\BT HC04.pdb

@@ -1,0 +1,28 @@
+C:\Users\Guest Century\AppData\Local\Temporary Projects\BT HC04\bin\Debug\BT HC04.exe
+C:\Users\Guest Century\AppData\Local\Temporary Projects\BT HC04\bin\Debug\BT HC04.pdb
+C:\Users\Guest Century\AppData\Local\Temporary Projects\BT HC04\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Guest Century\AppData\Local\Temporary Projects\BT HC04\obj\Debug\BT_HC04.Form1.resources
+C:\Users\Guest Century\AppData\Local\Temporary Projects\BT HC04\obj\Debug\BT_HC04.Properties.Resources.resources
+C:\Users\Guest Century\AppData\Local\Temporary Projects\BT HC04\obj\Debug\BT HC04.csproj.GenerateResource.Cache
+C:\Users\Guest Century\AppData\Local\Temporary Projects\BT HC04\obj\Debug\BT HC04.exe
+C:\Users\Guest Century\AppData\Local\Temporary Projects\BT HC04\obj\Debug\BT HC04.pdb
+C:\Users\Guest Century\Documents\Visual Studio 2008\Projects\BT HC04\BT HC04\obj\Debug\BT HC04.exe
+C:\Users\Guest Century\Documents\Visual Studio 2008\Projects\BT HC04\BT HC04\obj\Debug\BT HC04.pdb
+C:\Users\Guest Century\Documents\Visual Studio 2008\Projects\BT HC04\BT HC04\bin\Debug\BT HC04.exe
+C:\Users\Guest Century\Documents\Visual Studio 2008\Projects\BT HC04\BT HC04\bin\Debug\BT HC04.pdb
+C:\Users\Guest Century\Documents\Visual Studio 2008\Projects\BT HC04\BT HC04\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Guest Century\Documents\Visual Studio 2008\Projects\BT HC04\BT HC04\obj\Debug\BT_HC04.Form1.resources
+C:\Users\Guest Century\Documents\Visual Studio 2008\Projects\BT HC04\BT HC04\obj\Debug\BT_HC04.Properties.Resources.resources
+C:\Users\Guest Century\Documents\Visual Studio 2008\Projects\BT HC04\BT HC04\obj\Debug\BT HC04.csproj.GenerateResource.Cache
+D:\Tim\Documents\Projects\BT HC04\BT HC04\obj\Debug\BT HC04.exe
+D:\Tim\Documents\Projects\BT HC04\BT HC04\obj\Debug\BT HC04.pdb
+D:\Tim\Documents\Projects\BT HC04\BT HC04\bin\Debug\BT HC04.exe
+D:\Tim\Documents\Projects\BT HC04\BT HC04\bin\Debug\BT HC04.pdb
+D:\Tim\Documents\Projects\BT HC04\BT HC04\obj\Debug\BT HC04.csprojResolveAssemblyReference.cache
+D:\Tim\Documents\Projects\BT HC04\BT HC04\obj\Debug\BT_HC04.Form1.resources
+D:\Tim\Documents\Projects\BT HC04\BT HC04\obj\Debug\BT_HC04.Properties.Resources.resources
+D:\Tim\Documents\Projects\BT HC04\BT HC04\obj\Debug\BT HC04.csproj.GenerateResource.Cache
+D:\Tim\Documents\Projects\BT HC04\BT HC04\bin\Debug\BT HC04.exe.config
+D:\Pickit\Projects\28.Bootloader\BT HC04\bin\Debug\BT HC04.exe.config
+D:\Pickit\Projects\28.Bootloader\BT HC04\obj\Debug\BT HC04.exe
+D:\Pickit\Projects\28.Bootloader\BT HC04\obj\Debug\BT HC04.pdb

@@ -1,0 +1,3 @@
+D:\Pickit\Projects\28.Bootloader\BT HC04\bin\Debug\BT HC04.exe.config
+D:\Pickit\Projects\28.Bootloader\BT HC04\obj\Debug\BT HC04.exe
+D:\Pickit\Projects\28.Bootloader\BT HC04\obj\Debug\BT HC04.pdb

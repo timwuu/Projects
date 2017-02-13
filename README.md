@@ -11,3 +11,5 @@ Miscellaneous PIC Projects
 30.Serial Boot Loader.X  -- [OK] Serial Bootloader Program
 
 39.ExpMZEFH100.X -- Explorer16/32 Dev Board, Initial Testing with PIC32MZ2048EFH100 PIM
+
+40.MM_UARTJTAG.X -- 20MHz, UART:921,600, SPI(3)->JTAG(2) Wire

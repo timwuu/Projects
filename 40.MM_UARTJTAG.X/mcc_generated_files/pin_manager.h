@@ -202,6 +202,444 @@
 #define IO_RB5_SetDigitalOutput()   ( TRISBCLR = (1 << 5) )
 /**
   @Summary
+    Sets the GPIO pin, RB7, high using LATBbits.LATB7.
+
+  @Description
+    Sets the GPIO pin, RB7, high using LATBbits.LATB7.
+
+  @Preconditions
+    The RB7 must be set to an output.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Set RB7 high (1)
+    TG_MCLR_SetHigh();
+    </code>
+
+*/
+#define TG_MCLR_SetHigh()          ( LATBSET = (1 << 7) )
+/**
+  @Summary
+    Sets the GPIO pin, RB7, low using LATBbits.LATB7.
+
+  @Description
+    Sets the GPIO pin, RB7, low using LATBbits.LATB7.
+
+  @Preconditions
+    The RB7 must be set to an output.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Set RB7 low (0)
+    TG_MCLR_SetLow();
+    </code>
+
+*/
+#define TG_MCLR_SetLow()           ( LATBCLR = (1 << 7) )
+/**
+  @Summary
+    Toggles the GPIO pin, RB7, using LATBbits.LATB7.
+
+  @Description
+    Toggles the GPIO pin, RB7, using LATBbits.LATB7.
+
+  @Preconditions
+    The RB7 must be set to an output.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Toggle RB7
+    TG_MCLR_Toggle();
+    </code>
+
+*/
+#define TG_MCLR_Toggle()           ( LATBINV = (1 << 7) )
+/**
+  @Summary
+    Reads the value of the GPIO pin, RB7.
+
+  @Description
+    Reads the value of the GPIO pin, RB7.
+
+  @Preconditions
+    None.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    uint16_t portValue;
+
+    // Read RB7
+    postValue = TG_MCLR_GetValue();
+    </code>
+
+*/
+#define TG_MCLR_GetValue()         PORTBbits.RB7
+/**
+  @Summary
+    Configures the GPIO pin, RB7, as an input.
+
+  @Description
+    Configures the GPIO pin, RB7, as an input.
+
+  @Preconditions
+    None.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Sets the RB7 as an input
+    TG_MCLR_SetDigitalInput();
+    </code>
+
+*/
+#define TG_MCLR_SetDigitalInput()   ( TRISBSET = (1 << 7) )
+/**
+  @Summary
+    Configures the GPIO pin, RB7, as an output.
+
+  @Description
+    Configures the GPIO pin, RB7, as an output.
+
+  @Preconditions
+    None.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Sets the RB7 as an output
+    TG_MCLR_SetDigitalOutput();
+    </code>
+
+*/
+#define TG_MCLR_SetDigitalOutput()   ( TRISBCLR = (1 << 7) )
+/**
+  @Summary
+    Sets the GPIO pin, RB8, high using LATBbits.LATB8.
+
+  @Description
+    Sets the GPIO pin, RB8, high using LATBbits.LATB8.
+
+  @Preconditions
+    The RB8 must be set to an output.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Set RB8 high (1)
+    SCK1_SetHigh();
+    </code>
+
+*/
+#define SCK1_SetHigh()          ( LATBSET = (1 << 8) )
+/**
+  @Summary
+    Sets the GPIO pin, RB8, low using LATBbits.LATB8.
+
+  @Description
+    Sets the GPIO pin, RB8, low using LATBbits.LATB8.
+
+  @Preconditions
+    The RB8 must be set to an output.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Set RB8 low (0)
+    SCK1_SetLow();
+    </code>
+
+*/
+#define SCK1_SetLow()           ( LATBCLR = (1 << 8) )
+/**
+  @Summary
+    Toggles the GPIO pin, RB8, using LATBbits.LATB8.
+
+  @Description
+    Toggles the GPIO pin, RB8, using LATBbits.LATB8.
+
+  @Preconditions
+    The RB8 must be set to an output.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Toggle RB8
+    SCK1_Toggle();
+    </code>
+
+*/
+#define SCK1_Toggle()           ( LATBINV = (1 << 8) )
+/**
+  @Summary
+    Reads the value of the GPIO pin, RB8.
+
+  @Description
+    Reads the value of the GPIO pin, RB8.
+
+  @Preconditions
+    None.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    uint16_t portValue;
+
+    // Read RB8
+    postValue = SCK1_GetValue();
+    </code>
+
+*/
+#define SCK1_GetValue()         PORTBbits.RB8
+/**
+  @Summary
+    Configures the GPIO pin, RB8, as an input.
+
+  @Description
+    Configures the GPIO pin, RB8, as an input.
+
+  @Preconditions
+    None.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Sets the RB8 as an input
+    SCK1_SetDigitalInput();
+    </code>
+
+*/
+#define SCK1_SetDigitalInput()   ( TRISBSET = (1 << 8) )
+/**
+  @Summary
+    Configures the GPIO pin, RB8, as an output.
+
+  @Description
+    Configures the GPIO pin, RB8, as an output.
+
+  @Preconditions
+    None.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Sets the RB8 as an output
+    SCK1_SetDigitalOutput();
+    </code>
+
+*/
+#define SCK1_SetDigitalOutput()   ( TRISBCLR = (1 << 8) )
+/**
+  @Summary
+    Sets the GPIO pin, RB9, high using LATBbits.LATB9.
+
+  @Description
+    Sets the GPIO pin, RB9, high using LATBbits.LATB9.
+
+  @Preconditions
+    The RB9 must be set to an output.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Set RB9 high (1)
+    SDO1_SetHigh();
+    </code>
+
+*/
+#define SDO1_SetHigh()          ( LATBSET = (1 << 9) )
+/**
+  @Summary
+    Sets the GPIO pin, RB9, low using LATBbits.LATB9.
+
+  @Description
+    Sets the GPIO pin, RB9, low using LATBbits.LATB9.
+
+  @Preconditions
+    The RB9 must be set to an output.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Set RB9 low (0)
+    SDO1_SetLow();
+    </code>
+
+*/
+#define SDO1_SetLow()           ( LATBCLR = (1 << 9) )
+/**
+  @Summary
+    Toggles the GPIO pin, RB9, using LATBbits.LATB9.
+
+  @Description
+    Toggles the GPIO pin, RB9, using LATBbits.LATB9.
+
+  @Preconditions
+    The RB9 must be set to an output.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Toggle RB9
+    SDO1_Toggle();
+    </code>
+
+*/
+#define SDO1_Toggle()           ( LATBINV = (1 << 9) )
+/**
+  @Summary
+    Reads the value of the GPIO pin, RB9.
+
+  @Description
+    Reads the value of the GPIO pin, RB9.
+
+  @Preconditions
+    None.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    uint16_t portValue;
+
+    // Read RB9
+    postValue = SDO1_GetValue();
+    </code>
+
+*/
+#define SDO1_GetValue()         PORTBbits.RB9
+/**
+  @Summary
+    Configures the GPIO pin, RB9, as an input.
+
+  @Description
+    Configures the GPIO pin, RB9, as an input.
+
+  @Preconditions
+    None.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Sets the RB9 as an input
+    SDO1_SetDigitalInput();
+    </code>
+
+*/
+#define SDO1_SetDigitalInput()   ( TRISBSET = (1 << 9) )
+/**
+  @Summary
+    Configures the GPIO pin, RB9, as an output.
+
+  @Description
+    Configures the GPIO pin, RB9, as an output.
+
+  @Preconditions
+    None.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Sets the RB9 as an output
+    SDO1_SetDigitalOutput();
+    </code>
+
+*/
+#define SDO1_SetDigitalOutput()   ( TRISBCLR = (1 << 9) )
+/**
+  @Summary
     Sets the GPIO pin, RC9, high using LATCbits.LATC9.
 
   @Description

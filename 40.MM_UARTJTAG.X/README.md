@@ -7,7 +7,7 @@
 
  UART:921,600Hz
 
- SPI:5MHz, 3 Wire to JTAG 2 Wire
+ SPI:10MHz, 3 Wire to JTAG 2 Wire
 
 
   OSC1 +  9

@@ -44,10 +44,14 @@
 */
 
 #include "mcc_generated_files/mcc.h"
+#include "pic32mm_pe.h"
 
 void UART_PutUint32( uint32_t data);
 bool checkDeviceStatus( void);
 void P32XferInstruction( uint32_t instruction);
+uint32_t P32XferFastData32b( uint32_t data32);
+
+uint32_t readPEVersion();
 
 void enterSerialExecution();
 void downloadPE();
@@ -74,27 +78,6 @@ void sysError( uint32_t);
 
 //#define 2W4P_BLANK 0xCCCCCCCC
 
-#define PE_LOADER_SIZE 22
-
-uint16_t pe_Loader[PE_LOADER_SIZE] = {
-                                                     //   0x0C00, 0x0C00,
-                                                     //   0xED20, 0x0C00,  // turn on LED.B5
-                                                     //   0x41A3, 0xBF80,  
-                                                     //   0xF843, 0x2738,  // LATBSET
-                                                     // [LOW],  [HIGH]
-                                                        0x41A3, 0xFF20,
-                                                        0x41A5, 0xDEAD,
-                                                        0x6A30, 0x6930,
-                                                        0x94A2, 0x0009,
-                                                        0x41B9, 0xA000,
-                                                        0x40E2, 0xFFF8,
-                                                        0x6B30, 0xEB40,
-                                                        0x6E42, 0xCFFA,
-                                                        0x6D2E,
-                                                        0x3339, 0x0301,
-                                                        0x4599,
-                                                        0x0C00, 0x0C00 };  //nop;nop; required
-
 //from <Run Test/Idle>
 //Send Command and goto <Run Test/Idle>
 void sendCommand5b( uint8_t cmd) 
@@ -103,7 +86,7 @@ void sendCommand5b( uint8_t cmd)
     uint32_t data[2];
             
     //Cmd.LSB first
-    // TDO:0000.cccc.c000.0000
+    // TDI:0000.cccc.c000.0000
     // TMS:1100.0000.1100.0000
     data[0]= 0x44000000; //JTAG Goto <Run Test/Idle> State
     data[1]= 0x44000000; //JTAG Goto <Run Test/Idle> State
@@ -173,7 +156,7 @@ uint8_t xferData8b( uint8_t data8)
     uint32_t data[2];
     
     //Cmd.LSB first
-    // TDO:0000.cccc.cccc.0000
+    // TDI:0000.cccc.cccc.0000
     // TMS:0100.0000.0001.1000
     data[0]= 0x04000000; 
     data[1]= 0x00044000; //JTAG Goto <Run Test/Idle> State
@@ -247,17 +230,18 @@ uint8_t xferData8b( uint8_t data8)
 uint32_t xferData32b( uint32_t data32) 
 {
 
-    uint32_t data[6];
+    uint32_t data[5];
     
     //Cmd.LSB first
-    // TDO:0000.cccc.cccc.cccc:cccc.cccc.cccc.cccc:cccc.0000.0000.0000
-    // TMS:0100.0000.0000.0000.0000.0000.0000.0000:0001.1000.0000.0000
+    // TDI:0000.cccc:cccc.cccc:cccc.cccc:cccc.cccc:cccc.0000
+    // TMS:0100.0000:0000.0000.0000.0000:0000.0000:0001.1000
+    // TDO:000d.dddd:dddd.dddd.dddd.dddd:dddd.dddd:ddd0.0000
     data[0]= 0x04000000; //JTAG Goto <Run Test/Idle> State
     data[1]= 0x00000000; //JTAG Goto <Run Test/Idle> State
     data[2]= 0x00000000; //JTAG Goto <Run Test/Idle> State
     data[3]= 0x00000000; //JTAG Goto <Run Test/Idle> State
     data[4]= 0x00044000; //JTAG Goto <Run Test/Idle> State
-    data[5]= 0x00000000; //JTAG Goto <Run Test/Idle> State
+    //data[5]= 0x00000000; //JTAG Goto <Run Test/Idle> State
 
     uint32_t result;
     uint32_t _bit;
@@ -297,7 +281,7 @@ uint32_t xferData32b( uint32_t data32)
     SPI1_Exchange( (uint8_t*)&data[2], (uint8_t*)&data[2] );
     SPI1_Exchange( (uint8_t*)&data[3], (uint8_t*)&data[3] );
     SPI1_Exchange( (uint8_t*)&data[4], (uint8_t*)&data[4] );
-    SPI1_Exchange( (uint8_t*)&data[5], (uint8_t*)&data[5] );
+    //SPI1_Exchange( (uint8_t*)&data[5], (uint8_t*)&data[5] );
     
     SPI1CONbits.ON = 0;
     
@@ -318,40 +302,94 @@ uint32_t xferData32b( uint32_t data32)
         }
     }
     
-//    if( data[0] & 0x00030000) result |= 0x01;   
-//    if( data[0] & 0x00003000) result |= 0x02;
-//    if( data[0] & 0x00000300) result |= 0x04;
-//    if( data[0] & 0x00000030) result |= 0x08;
-//    if( data[0] & 0x00000003) result |= 0x10;
-//    if( data[1] & 0x30000000) result |= 0x20;
-//    if( data[1] & 0x03000000) result |= 0x40;
-//    if( data[1] & 0x00300000) result |= 0x80;
-//    if( data[1] & 0x00030000) result |= 0x100;
-//    if( data[1] & 0x00003000) result |= 0x200;
-//    if( data[1] & 0x00000300) result |= 0x400;
-//    if( data[1] & 0x00000030) result |= 0x800;
-//    if( data[1] & 0x00000003) result |= 0x1000;
-//    if( data[2] & 0x30000000) result |= 0x2000;
-//    if( data[2] & 0x03000000) result |= 0x4000;
-//    if( data[2] & 0x00300000) result |= 0x8000;
-//    if( data[2] & 0x00030000) result |= 0x10000;
-//    if( data[2] & 0x00003000) result |= 0x20000;
-//    if( data[2] & 0x00000300) result |= 0x40000;
-//    if( data[2] & 0x00000030) result |= 0x80000;
-//    if( data[2] & 0x00000003) result |= 0x100000;
-//    
-//    if( data[3] & 0x30000000) result |= 0x200000;
-//    if( data[3] & 0x03000000) result |= 0x400000;
-//    if( data[3] & 0x00300000) result |= 0x800000;
-//    if( data[3] & 0x00030000) result |= 0x1000000;
-//    if( data[3] & 0x00003000) result |= 0x2000000;
-//    if( data[3] & 0x00000300) result |= 0x4000000;
-//    if( data[3] & 0x00000030) result |= 0x8000000;
-//    if( data[3] & 0x00000003) result |= 0x1000000;
-//
-//    if( data[4] & 0x30000000) result |= 0x20000000;
-//    if( data[4] & 0x03000000) result |= 0x40000000;
-//    if( data[4] & 0x00300000) result |= 0x80000000;
+    return result;
+    
+}
+
+//from <Run Test/Idle>
+//prerequisite ETAP_FASTDATA
+//Xfer Fast Data and goto <Run Test/Idle>
+uint32_t P32XferFastData32b( uint32_t data32) 
+{
+
+    uint32_t data[5];
+    
+    // Cmd.LSB first, p:PrAcc
+    // TDI:0000.cccc:cccc.cccc:cccc.cccc:cccc.cccc:cccc.0000
+    // TMS:1000.0000:0000.0000.0000.0000:0000.0000:0001.1000
+    // TDO:00pd.dddd:dddd.dddd.dddd.dddd:dddd.dddd:ddd0.0000
+    data[0]= 0x40000000; //JTAG Goto <Run Test/Idle> State
+    data[1]= 0x00000000; //JTAG Goto <Run Test/Idle> State
+    data[2]= 0x00000000; //JTAG Goto <Run Test/Idle> State
+    data[3]= 0x00000000; //JTAG Goto <Run Test/Idle> State
+    data[4]= 0x00044000; //JTAG Goto <Run Test/Idle> State
+    //data[5]= 0x00000000; //JTAG Goto <Run Test/Idle> State
+
+    uint32_t result;
+    uint32_t _bit;
+    uint32_t _mask;
+    uint32_t i,j;
+
+    _bit  =0x00000001;
+    _mask =0x00008000;
+
+    for( i=0,j=0; i<32; i++)
+    {
+        if( data32 & _bit) data[j] |= _mask;
+        
+        _mask = _mask >> 4;
+        _bit  = _bit << 1;
+        if(_mask==0x0)
+        {
+            _mask=0x80000000;
+            j++;
+        }
+    }
+    
+    SPI1CONbits.ON = 0;
+    SPI1CONbits.MODE32 = 1;
+    //SPI1CONbits.MODE16 = 0;
+
+    SPI1CONbits.CKP = 0;
+    SPI1CONbits.CKE = 0;
+    SPI1CONbits.SMP = 0;
+     
+    SDO1_SetLow();
+    SCK1_SetLow();    
+    SPI1CONbits.ON = 1;
+    
+    SPI1_Exchange( (uint8_t*)&data[0], (uint8_t*)&data[0] );
+    SPI1_Exchange( (uint8_t*)&data[1], (uint8_t*)&data[1] );
+    SPI1_Exchange( (uint8_t*)&data[2], (uint8_t*)&data[2] );
+    SPI1_Exchange( (uint8_t*)&data[3], (uint8_t*)&data[3] );
+    SPI1_Exchange( (uint8_t*)&data[4], (uint8_t*)&data[4] );
+    //SPI1_Exchange( (uint8_t*)&data[5], (uint8_t*)&data[5] );
+    
+    SPI1CONbits.ON = 0;
+
+    //check PrAcc bit
+    if( (data[0] & 0x00100000)==0 )
+    {
+        sysError(0xE0E0E0E0);
+        return 0x00;
+    }
+    
+    result=0x00000000;
+    _bit  =0x00000001;
+    _mask =0x00010000;
+
+    for( i=0,j=0; i<32; i++)
+    {
+        if( data[j] & _mask) result |= _bit;
+        
+        _mask = _mask >> 4;
+        _bit  = _bit << 1;
+        if(_mask==0x0)
+        {
+            _mask=0x10000000;
+            j++;
+        }
+    }
     
     return result;
     
@@ -485,7 +523,10 @@ void processCmd( uint8_t cmd)
                 
                 downloadPE();
             
-                for( i=0; i<100000; i++);
+                readPEVersion();
+                
+                while(UART2_ReceiveBufferIsEmpty());
+                UART2_Read();
              
                 LATBCLR = _LATB_LATB5_MASK;
 
@@ -735,9 +776,13 @@ void downloadPE()
     // step 0. Turn On LED at RB5
     P32XferInstruction( 0x0C00ED20);
     P32XferInstruction( 0xBF8041A3);
-    P32XferInstruction( 0x2714F843);
+    P32XferInstruction( 0x2734F843);  //LATBCLR
+
     P32XferInstruction( 0xBF8041A3);
-    P32XferInstruction( 0x2738F843);
+    P32XferInstruction( 0x2714F843);  //TRISBCLR
+    
+    //P32XferInstruction( 0xBF8041A3);
+    //P32XferInstruction( 0x2738F843);  //LATBSET
     
     // step 1. setup the PIC32MM RAM A000.0200
     P32XferInstruction( 0xA00041A4);
@@ -755,8 +800,25 @@ void downloadPE()
     P32XferInstruction( 0xa00041b9);
     P32XferInstruction( 0x02015339);
     P32XferInstruction( 0x0c004599);
-    P32XferInstruction( 0x0c000c00);
-    P32XferInstruction( 0x0c000c00);
+    P32XferInstruction( 0x0c000c00);  //nop; nop; required
+    P32XferInstruction( 0x0c000c00);  //nop; nop; required
+    
+    // step 4.A
+    sendCommand5b( MTAP_SW_ETAP);   
+    setRunTestIdleMode();
+
+    sendCommand5b( ETAP_FASTDATA);
+    P32XferFastData32b( 0xA0000300);
+    P32XferFastData32b( PIC32MM_PE_SIZE);
+    
+    
+    // step 4.B
+    for( i=0; i<PIC32MM_PE_SIZE; i++)
+        P32XferFastData32b(PIC32_PE_MM[i]);
+    
+    // step 5. Jump to PE
+    P32XferFastData32b( 0x00000000);
+    P32XferFastData32b( 0xDEAD0000);
     
     
 }
@@ -784,6 +846,23 @@ void P32XferInstruction( uint32_t instruction)
     //while( UART2_TransmitBufferIsFull());    
     //UART2_Write('o');
 
+}
+
+uint32_t readPEVersion()
+{
+    uint32_t ver=0x0000;
+    
+    sendCommand5b(ETAP_FASTDATA);
+    
+    P32XferFastData32b(0x00070000);
+    
+    ver=P32XferFastData32b(0x00000000);
+    
+    while( UART2_TransmitBufferIsFull());    
+    UART2_Write('v');
+    UART_PutUint32(ver);
+
+    return ver;
 }
 
 void sysError( uint32_t dat)

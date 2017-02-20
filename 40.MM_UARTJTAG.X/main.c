@@ -856,6 +856,8 @@ uint32_t readPEVersion()
     
     P32XferFastData32b(0x00070000);
     
+    //wait??
+    
     ver=P32XferFastData32b(0x00000000);
     
     while( UART2_TransmitBufferIsFull());    

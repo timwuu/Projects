@@ -1,2 +1,3 @@
-40.MM_UARTJTAG.X/dist
-40.MM_UARTJTAG.X/build
+**/dist
+**/debug
+**/build

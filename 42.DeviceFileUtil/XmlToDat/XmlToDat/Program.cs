@@ -13,6 +13,24 @@ namespace XmlToDat
 {
     class Program
     {
+
+        public class PIC32MM
+        {
+            public string PartName;
+            public uint DeviceID;
+            public uint ProgramMem;
+
+            public PIC32MM(string pname, uint devid, uint progmem )
+            {
+                PartName = pname;
+                DeviceID = devid;
+                ProgramMem = progmem;
+            }
+        }
+
+        public static PIC32MM[] PIC32MM_List;
+
+
         public static String FirmwareVersion = "NA";
         public static String DeviceFileVersion = "NA";
         public static DeviceFile DevFile = new DeviceFile();
@@ -21,10 +39,29 @@ namespace XmlToDat
 
         static void Main(string[] args)
         {
+            InitPIC32MMList();
+
             //ReadDeviceFile("PK2DeviceFile.dat");
             ReadDeviceFileXML("PK2DeviceFile.dat");
             WriteDeviceFileDAT("PK2DeviceFileNew.dat");
         }
+
+        public static void InitPIC32MMList()
+        {
+            PIC32MM_List = new PIC32MM[9];
+
+            PIC32MM_List[0] = new PIC32MM("PIC32MM0016GPL020", 0x6B04053, 0x15C0);
+            PIC32MM_List[1] = new PIC32MM("PIC32MM0032GPL020", 0x6B0C053, 0x25C0);
+            PIC32MM_List[2] = new PIC32MM("PIC32MM0064GPL020", 0x6B14053, 0x45C0);
+            PIC32MM_List[3] = new PIC32MM("PIC32MM0016GPL028", 0x6B02053, 0x15C0);
+            PIC32MM_List[4] = new PIC32MM("PIC32MM0032GPL028", 0x6B0A053, 0x25C0);
+            PIC32MM_List[5] = new PIC32MM("PIC32MM0064GPL028", 0x6B12053, 0x45C0);
+            PIC32MM_List[6] = new PIC32MM("PIC32MM0016GPL036", 0x6B06053, 0x15C0);
+            PIC32MM_List[7] = new PIC32MM("PIC32MM0032GPL036", 0x6B0B053, 0x25C0);
+            PIC32MM_List[8] = new PIC32MM("PIC32MM0064GPL036", 0x6B16053, 0x45C0);
+
+        }
+
 
         public static bool ReadDeviceFile(string DeviceFileName)
         {
@@ -719,6 +756,7 @@ namespace XmlToDat
                     {
                         //timijk 2017.02.21
                         DevFile.Info.VersionNotes = "PIC32MM Errata: Reset Module, Chip Erase";
+                        DevFile.Info.NumberParts += 8; //duplicate for another 8 devices
                         //
                         binWrite.Write(DevFile.Info.VersionMajor);
                         binWrite.Write(DevFile.Info.VersionMinor);
@@ -768,9 +806,19 @@ namespace XmlToDat
                         // now read all parts if they are there
                         //
                         //int l_y = DevFile.Info.NumberParts;
-
-                        for (int l_x = 0; l_x < DevFile.Info.NumberParts; l_x++)
+                        
+                        for (int l_x = 0, l_y = 0; l_y < DevFile.Info.NumberParts; l_y++)
                         {
+                            if (l_y == 0) l_x = l_y;
+                            else
+                            {
+                                l_x = 1;
+
+                                DevFile.PartsList[l_x].PartName = PIC32MM_List[l_y-1].PartName;
+                                DevFile.PartsList[l_x].DeviceID = PIC32MM_List[l_y-1].DeviceID & DevFile.Families[DevFile.PartsList[l_x].Family].DeviceIDMask;
+                                DevFile.PartsList[l_x].ProgramMem = PIC32MM_List[l_y-1].ProgramMem;
+                            }
+
                             binWrite.Write(DevFile.PartsList[l_x].PartName);
                             binWrite.Write(DevFile.PartsList[l_x].Family);
                             binWrite.Write(DevFile.PartsList[l_x].DeviceID);

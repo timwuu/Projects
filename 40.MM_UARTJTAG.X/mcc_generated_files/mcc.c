@@ -87,8 +87,8 @@
 void SYSTEM_Initialize(void)
 {
     PIN_MANAGER_Initialize();
-    INTERRUPT_Initialize();
     OSCILLATOR_Initialize();
+    INTERRUPT_Initialize();
     UART2_Initialize();
     SPI1_Initialize();
     INTERRUPT_GlobalEnable();

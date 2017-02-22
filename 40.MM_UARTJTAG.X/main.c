@@ -53,6 +53,7 @@ uint32_t P32XferFastData32b( uint32_t data32);
 
 uint32_t readPEVersion();
 
+bool eraseDevice();
 void enterSerialExecution();
 void downloadPE();
 
@@ -73,6 +74,8 @@ void sysError( uint32_t);
 #define ETAP_CONTROL   0x0A
 #define ETAP_EJTAGBOOT 0x0C
 #define ETAP_FASTDATA  0x0E
+
+//#define _SMP 1  //1:end, 0:middle
 
 //#define DEVICE_ID 0x06B0E053
 
@@ -135,8 +138,7 @@ void sendCommand5b( uint8_t cmd)
 
     SPI1CONbits.CKP = 0;
     SPI1CONbits.CKE = 0;
-    SPI1CONbits.SMP = 0;
-     
+      
     SDO1_SetLow();
     SCK1_SetLow();    
     SPI1CONbits.ON = 1;
@@ -193,7 +195,6 @@ uint8_t xferData8b( uint8_t data8)
 
     SPI1CONbits.CKP = 0;
     SPI1CONbits.CKE = 0;
-    SPI1CONbits.SMP = 0;
      
     SDO1_SetLow();
     SCK1_SetLow();    
@@ -206,7 +207,7 @@ uint8_t xferData8b( uint8_t data8)
     
     result=0x00000000;
     _bit  =0x00000001;
-    _mask =0x00010000;
+    _mask =0x00020000;
 
     for( i=0,j=0; i<8; i++)
     {
@@ -216,7 +217,7 @@ uint8_t xferData8b( uint8_t data8)
         _bit  = _bit << 1;
         if(_mask==0x0)
         {
-            _mask=0x10000000;
+            _mask=0x20000000;
             j++;
         }
     }
@@ -270,7 +271,6 @@ uint32_t xferData32b( uint32_t data32)
 
     SPI1CONbits.CKP = 0;
     SPI1CONbits.CKE = 0;
-    SPI1CONbits.SMP = 0;
      
     SDO1_SetLow();
     SCK1_SetLow();    
@@ -287,7 +287,7 @@ uint32_t xferData32b( uint32_t data32)
     
     result=0x00000000;
     _bit  =0x00000001;
-    _mask =0x00010000;
+    _mask =0x00020000;
 
     for( i=0,j=0; i<32; i++)
     {
@@ -297,7 +297,7 @@ uint32_t xferData32b( uint32_t data32)
         _bit  = _bit << 1;
         if(_mask==0x0)
         {
-            _mask=0x10000000;
+            _mask=0x20000000;
             j++;
         }
     }
@@ -352,7 +352,6 @@ uint32_t P32XferFastData32b( uint32_t data32)
 
     SPI1CONbits.CKP = 0;
     SPI1CONbits.CKE = 0;
-    SPI1CONbits.SMP = 0;
      
     SDO1_SetLow();
     SCK1_SetLow();    
@@ -376,7 +375,7 @@ uint32_t P32XferFastData32b( uint32_t data32)
     
     result=0x00000000;
     _bit  =0x00000001;
-    _mask =0x00010000;
+    _mask =0x00020000;
 
     for( i=0,j=0; i<32; i++)
     {
@@ -386,7 +385,7 @@ uint32_t P32XferFastData32b( uint32_t data32)
         _bit  = _bit << 1;
         if(_mask==0x0)
         {
-            _mask=0x10000000;
+            _mask=0x20000000;
             j++;
         }
     }
@@ -406,8 +405,7 @@ void setTestLogicResetMode()
 
     SPI1CONbits.CKP = 0;
     SPI1CONbits.CKE = 0;
-    SPI1CONbits.SMP = 0;
-     
+      
     SDO1_SetLow();
     SCK1_SetLow();    
     SPI1CONbits.ON = 1;
@@ -429,8 +427,7 @@ void setRunTestIdleMode()
 
     SPI1CONbits.CKP = 0;
     SPI1CONbits.CKE = 0;
-    SPI1CONbits.SMP = 0;
-     
+       
     SDO1_SetLow();
     SCK1_SetLow();    
     SPI1CONbits.ON = 1;
@@ -484,7 +481,6 @@ void exitICSP()
 
     SPI1CONbits.CKP = 0;
     SPI1CONbits.CKE = 0;
-    SPI1CONbits.SMP = 0;
      
     SDO1_SetLow();
     SCK1_SetLow();    
@@ -505,6 +501,40 @@ void exitICSP()
     SCK1_SetHigh();
     SCK1_SetLow();
     
+}
+
+bool eraseDevice()
+{
+    uint8_t status, cnt;
+    uint32_t i;
+
+    sendCommand5b( MTAP_SW_MTAP);
+    sendCommand5b( MTAP_COMMAND);
+     
+    xferData8b( MCHP_ERASE);
+    xferData8b( MCHP_DE_ASSERT_RST);
+    
+    cnt=0xFF;
+    
+    while(cnt--)
+    {
+      status= xferData8b( MCHP_STATUS);
+     
+      // CPS<7>,NVMERR<5>,CFGRDY<3>,FCBUSY<2>,DEVRST<0>
+      // break: CFGRDY==1 and FCBUSY==0
+      if( (status & 0x08) && ((~status) & 0x04) ) break;
+      
+      //delay 10 ms
+      for( i=0; i<100; i++);
+    }
+    
+    UART_PutUint8(status);
+
+    UART2_Write('#');
+    
+    UART_PutUint8(cnt);
+    
+    return ((cnt==0)?false:true);
 }
 
 void processCmd( uint8_t cmd)
@@ -723,7 +753,7 @@ bool checkDeviceStatus()
       status= xferData8b( MCHP_STATUS);
      
       // CPS<7>,NVMERR<5>,CFGRDY<3>,FCBUSY<2>,DEVRST<0>
-      // continue: CFGRDY==1 and FCBUSY==0
+      // break: CFGRDY==1 and FCBUSY==0
       if( (status & 0x08) && ((~status) & 0x04) ) break;
       
       for( i=0; i<100; i++);

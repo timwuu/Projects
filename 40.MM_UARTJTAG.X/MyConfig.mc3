@@ -355,7 +355,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="Pin Module" registerAlias="LATB" settingAlias="LATB14"/>
-         <value>set</value>
+         <value>clear</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.OptionKey" moduleName="Pin Module" registerAlias="ODCA" settingAlias="ODCA1" alias="enabled"/>
@@ -2587,7 +2587,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.RegisterKey" moduleName="Pin Module" registerAlias="LATB"/>
-         <value>16384</value>
+         <value>0</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="Pin Module" registerAlias="RPOR3" settingAlias="RP14R"/>
@@ -3071,7 +3071,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="Pin Module" name="trisUserSetRB15"/>
-         <value>disabled</value>
+         <value>enabled</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="Pin Module" name="trisUserSetRB14"/>
@@ -3339,7 +3339,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="SPI1" registerAlias="SPICON" settingAlias="MODE32"/>
-         <value>disabled</value>
+         <value>enabled</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.OptionKey" moduleName="Pin Module" registerAlias="CNFA" settingAlias="CNFA3" alias="enabled"/>
@@ -4283,7 +4283,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="SPI1" name="DataModeSelect"/>
-         <value>8 bit</value>
+         <value>32 bit</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.OptionKey" moduleName="System Module" registerAlias="FWDT" settingAlias="WDTPS" alias="PS1024"/>
@@ -5931,7 +5931,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.RegisterKey" moduleName="SPI1" registerAlias="SPICON"/>
-         <value>98848</value>
+         <value>100896</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="Pin Module" name="RB12"/>
@@ -5949,7 +5949,7 @@
    <generatedFileHashHistoryMap class="java.util.HashMap">
       <entry>
          <file>mcc_generated_files\mcc.h</file>
-         <hash>cd3f8c8442f91b549bc7940fc720d4d73d6484b250c2829a874a6cef482576a5</hash>
+         <hash>e3fe40ecf3cc091e5b2c473aec8f8243099b8524c7c8e773f5a98ff8e40fd356</hash>
       </entry>
       <entry>
          <file>mcc_generated_files\interrupt_manager.h</file>
@@ -5973,7 +5973,7 @@
       </entry>
       <entry>
          <file>mcc_generated_files\spi1.h</file>
-         <hash>4021a2d6ba1bb92f2493f59df58ca35d19e6b10813ee1e98de4a8b4c17d00a55</hash>
+         <hash>9e882c9fd2db472813165e036f94011e79c4f90cb2e3013c42948d0dca0bc239</hash>
       </entry>
       <entry>
          <file>mcc_generated_files\pin_manager.h</file>
@@ -5989,11 +5989,11 @@
       </entry>
       <entry>
          <file>mcc_generated_files\spi1.c</file>
-         <hash>25a31025dbcb950e90e1d89a27fc2709bb0dee387529acb18baba6d605fc4864</hash>
+         <hash>c0ef2c6741ee9a867274abfb9ba3cf1a87b75f136e94994a9dd36f04e0686367</hash>
       </entry>
       <entry>
          <file>mcc_generated_files\pin_manager.c</file>
-         <hash>21d92a91707b40304d43b21fe27b5b670184ee1ad91cbe6263da71c6a4e87ebb</hash>
+         <hash>b9adfbbc2498be24b8ca7df1aa2cfb5c84a30dbf9098903d6e64bfe503de1a62</hash>
       </entry>
    </generatedFileHashHistoryMap>
 </config>

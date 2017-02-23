@@ -46,6 +46,7 @@
 #include "mcc_generated_files/mcc.h"
 #include "pic32mm_pe.h"
 
+void UART_PutUint8( uint8_t data);
 void UART_PutUint32( uint32_t data);
 bool checkDeviceStatus( void);
 void P32XferInstruction( uint32_t instruction);
@@ -133,10 +134,7 @@ void sendCommand5b( uint8_t cmd)
 //    }
 
     SPI1CONbits.ON = 0;
-    SPI1CONbits.MODE32 = 1;
-    //SPI1CONbits.MODE16 = 0;
 
-    SPI1CONbits.CKP = 0;
     SPI1CONbits.CKE = 0;
       
     SDO1_SetLow();
@@ -190,10 +188,7 @@ uint8_t xferData8b( uint8_t data8)
     uint32_t i,j;
     
     SPI1CONbits.ON = 0;
-    SPI1CONbits.MODE32 = 1;
-    //SPI1CONbits.MODE16 = 0;
 
-    SPI1CONbits.CKP = 0;
     SPI1CONbits.CKE = 0;
      
     SDO1_SetLow();
@@ -266,10 +261,7 @@ uint32_t xferData32b( uint32_t data32)
     }
     
     SPI1CONbits.ON = 0;
-    SPI1CONbits.MODE32 = 1;
-    //SPI1CONbits.MODE16 = 0;
 
-    SPI1CONbits.CKP = 0;
     SPI1CONbits.CKE = 0;
      
     SDO1_SetLow();
@@ -347,10 +339,7 @@ uint32_t P32XferFastData32b( uint32_t data32)
     }
     
     SPI1CONbits.ON = 0;
-    SPI1CONbits.MODE32 = 1;
-    //SPI1CONbits.MODE16 = 0;
 
-    SPI1CONbits.CKP = 0;
     SPI1CONbits.CKE = 0;
      
     SDO1_SetLow();
@@ -367,7 +356,7 @@ uint32_t P32XferFastData32b( uint32_t data32)
     SPI1CONbits.ON = 0;
 
     //check PrAcc bit
-    if( (data[0] & 0x00100000)==0 )
+    if( (data[0] & 0x00200000)==0 )
     {
         sysError(0xE0E0E0E0);
         return 0x00;
@@ -400,10 +389,7 @@ void setTestLogicResetMode()
     uint32_t data= 0x44444444; //JTAG Goto <Test Logic Reset> State
 
     SPI1CONbits.ON = 0;
-    SPI1CONbits.MODE32 = 1;
-    //SPI1CONbits.MODE16 = 0;
 
-    SPI1CONbits.CKP = 0;
     SPI1CONbits.CKE = 0;
       
     SDO1_SetLow();
@@ -422,10 +408,7 @@ void setRunTestIdleMode()
     uint32_t data= 0x44444000; //JTAG Goto <Run Test/Idle> State
 
     SPI1CONbits.ON = 0;
-    SPI1CONbits.MODE32 = 1;
-    //SPI1CONbits.MODE16 = 0;
 
-    SPI1CONbits.CKP = 0;
     SPI1CONbits.CKE = 0;
        
     SDO1_SetLow();
@@ -443,9 +426,7 @@ void enterICSP()
     uint32_t data= 0x4D434850; //ICSP Entry Code
 
     SPI1CONbits.ON = 0;
-    SPI1CONbits.MODE32 = 1;
 
-    SPI1CONbits.CKP = 0;
     SPI1CONbits.CKE = 1;
     
     
@@ -476,10 +457,7 @@ void exitICSP()
     uint32_t data= 0x44444444; //JTAG Goto <Test Logic Reset> State
 
     SPI1CONbits.ON = 0;
-    SPI1CONbits.MODE32 = 1;
-    //SPI1CONbits.MODE16 = 0;
 
-    SPI1CONbits.CKP = 0;
     SPI1CONbits.CKE = 0;
      
     SDO1_SetLow();

@@ -49,10 +49,10 @@
 #include "pin_manager.h"
 #include <stdint.h>
 #include <stdbool.h>
-#include "uart2.h"
 #include "spi1.h"
 #include "interrupt_manager.h"
 #include "exceptions.h"
+#include "uart2.h"
 
 #define _XTAL_FREQ  20000000UL
 

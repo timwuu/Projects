@@ -87,8 +87,8 @@ void SPI1_Initialize (void)
     SPI1BRG = 0x0;
     // AUDMONO disabled; AUDEN disabled; SPITUREN disabled; FRMERREN disabled; IGNROV disabled; SPISGNEXT disabled; SPIROVEN disabled; AUDMOD disabled; IGNTUR disabled; 
     SPI1CON2 = 0x0;
-    // MCLKSEL PBCLK; DISSDO disabled; SRXISEL Last Word is Read; CKP Idle:Low, Active:High; FRMEN disabled; FRMSYPW One-Clock; SSEN disabled; FRMCNT 1; MSSEN disabled; MSTEN Master; MODE16 disabled; FRMPOL disabled; SMP End; SIDL disabled; FRMSYNC disabled; CKE Idle to Active; MODE32 disabled; SPIFE Frame Sync pulse precedes; STXISEL Complete; DISSDI disabled; ON enabled; ENHBUF enabled; 
-    SPI1CON = 0x18220;
+    // MCLKSEL PBCLK; DISSDO disabled; SRXISEL Last Word is Read; CKP Idle:Low, Active:High; FRMEN disabled; FRMSYPW One-Clock; SSEN disabled; FRMCNT 1; MSSEN disabled; MSTEN Master; MODE16 disabled; FRMPOL disabled; SMP End; SIDL disabled; FRMSYNC disabled; CKE Idle to Active; MODE32 enabled; SPIFE Frame Sync pulse precedes; STXISEL Complete; DISSDI disabled; ON enabled; ENHBUF enabled; 
+    SPI1CON = 0x18A20;
 
 }
 
@@ -265,22 +265,22 @@ uint16_t SPI1_ExchangeBuffer(uint8_t *pTransmitData, uint16_t byteCount, uint8_t
     return dataSentCount;
 }
 
-
-
-uint8_t SPI1_Exchange8bit( uint8_t data )
+uint32_t SPI1_Exchange32bit( uint32_t data )
 {
-    uint8_t receiveData;
-    
-    SPI1_Exchange(&data, &receiveData);
+    uint32_t receiveData;
+
+    SPI1_Exchange((uint8_t*)&data, (uint8_t*)&receiveData);
 
     return (receiveData);
 }
 
 
-uint16_t SPI1_Exchange8bitBuffer(uint8_t *dataTransmitted, uint16_t byteCount, uint8_t *dataReceived)
+uint16_t SPI1_Exchange32bitBuffer(uint32_t *dataTransmitted, uint16_t byteCount, uint32_t *dataReceived)
 {
-    return (SPI1_ExchangeBuffer(dataTransmitted, byteCount, dataReceived));
+    return (SPI1_ExchangeBuffer((uint8_t*)dataTransmitted, byteCount, (uint8_t*)dataReceived));
 }
+
+
 
 inline __attribute__((__always_inline__)) SPI1_TRANSFER_MODE SPI1_TransferModeGet(void)
 {

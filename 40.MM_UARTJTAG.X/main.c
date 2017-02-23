@@ -628,6 +628,8 @@ void main(void)
     
     TG_MCLR_SetHigh();  //Start up Target PIC
                    
+    MCCP1_TMR_Start();
+    
     while (1)
     {
         // Add your application code
@@ -638,7 +640,8 @@ void main(void)
 
         //UART2_Write( '-');           
 
-        
+        if( MCCP1_TMR_Timer32ElapsedThenClear()) LATBINV = _LATB_LATB5_MASK;
+                
         //loopback
         if( !UART2_ReceiveBufferIsEmpty())
         {

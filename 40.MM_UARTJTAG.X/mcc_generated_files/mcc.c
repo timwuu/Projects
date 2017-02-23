@@ -50,47 +50,48 @@
 // Configuration bits: selected in the GUI
 
 // FDEVOPT
-#pragma config SOSCHP = OFF    // Secondary Oscillator High Power Enable bit->SOSC oprerates in normal power mode.
+#pragma config SOSCHP = OFF    // Secondary Oscillator High Power Enable bit->SOSC oprerates in normal power mode.      
 
 // FICD
-#pragma config JTAGEN = OFF    // JTAG Enable bit->JTAG is disabled
-#pragma config ICS = PGx1    // ICE/ICD Communication Channel Selection bits->Communicate on PGEC1/PGED1
+#pragma config JTAGEN = OFF    // JTAG Enable bit->JTAG is disabled      
+#pragma config ICS = PGx1    // ICE/ICD Communication Channel Selection bits->Communicate on PGEC1/PGED1      
 
 // FPOR
-#pragma config BOREN = BOR3    // Brown-out Reset Enable bits->Brown-out Reset enabled in hardware; SBOREN bit disabled
-#pragma config RETVR = OFF    // Retention Voltage Regulator Enable bit->Retention regulator is disabled
-#pragma config LPBOREN = ON    // Low Power Brown-out Enable bit->Low power BOR is enabled, when main BOR is disabled
+#pragma config BOREN = BOR3    // Brown-out Reset Enable bits->Brown-out Reset enabled in hardware; SBOREN bit disabled      
+#pragma config RETVR = OFF    // Retention Voltage Regulator Enable bit->Retention regulator is disabled      
+#pragma config LPBOREN = ON    // Low Power Brown-out Enable bit->Low power BOR is enabled, when main BOR is disabled      
 
 // FWDT
-#pragma config SWDTPS = PS1048576    // Sleep Mode Watchdog Timer Postscale Selection bits->1:1048576
-#pragma config FWDTWINSZ = PS25_0    // Watchdog Timer Window Size bits->Watchdog timer window size is 25%
-#pragma config WINDIS = OFF    // Windowed Watchdog Timer Disable bit->Watchdog timer is in non-window mode
-#pragma config RWDTPS = PS1048576    // Run Mode Watchdog Timer Postscale Selection bits->1:1048576
-#pragma config RCLKSEL = LPRC    // Run Mode Watchdog Timer Clock Source Selection bits->Clock source is LPRC (same as for sleep mode)
-#pragma config FWDTEN = OFF    // Watchdog Timer Enable bit->WDT is disabled
+#pragma config SWDTPS = PS1048576    // Sleep Mode Watchdog Timer Postscale Selection bits->1:1048576      
+#pragma config FWDTWINSZ = PS25_0    // Watchdog Timer Window Size bits->Watchdog timer window size is 25%      
+#pragma config WINDIS = OFF    // Windowed Watchdog Timer Disable bit->Watchdog timer is in non-window mode      
+#pragma config RWDTPS = PS1048576    // Run Mode Watchdog Timer Postscale Selection bits->1:1048576      
+#pragma config RCLKSEL = LPRC    // Run Mode Watchdog Timer Clock Source Selection bits->Clock source is LPRC (same as for sleep mode)      
+#pragma config FWDTEN = OFF    // Watchdog Timer Enable bit->WDT is disabled      
 
 // FOSCSEL
-#pragma config FNOSC = PRI    // Oscillator Selection bits->Primary oscillator (XT, HS, EC)
-#pragma config PLLSRC = PRI    // System PLL Input Clock Selection bit->Primary oscillator is selected as PLL reference input on device reset
-#pragma config SOSCEN = OFF    // Secondary Oscillator Enable bit->Secondary oscillator (SOSC) is disabled
-#pragma config IESO = ON    // Two Speed Startup Enable bit->Two speed startup is enabled
-#pragma config POSCMOD = HS    // Primary Oscillator Selection bit->HS oscillator mode is selected
-#pragma config OSCIOFNC = OFF    // System Clock on CLKO Pin Enable bit->OSCO pin operates as a normal I/O
-#pragma config SOSCSEL = ON    // Secondary Oscillator External Clock Enable bit->External clock is connected to SOSCO pin (RA4 and RB4 are controlled by I/O port registers)
-#pragma config FCKSM = CSDCMD    // Clock Switching and Fail-Safe Clock Monitor Enable bits->Clock switching is disabled; Fail-safe clock monitor is disabled
+#pragma config FNOSC = FRCDIV    // Oscillator Selection bits->Fast RC oscillator (FRC) with divide-by-N 
+#pragma config PLLSRC = PRI    // System PLL Input Clock Selection bit->Primary oscillator is selected as PLL reference input on device reset      
+#pragma config SOSCEN = OFF    // Secondary Oscillator Enable bit->Secondary oscillator (SOSC) is disabled      
+#pragma config IESO = ON    // Two Speed Startup Enable bit->Two speed startup is enabled      
+#pragma config POSCMOD = HS    // Primary Oscillator Selection bit->HS oscillator mode is selected      
+#pragma config OSCIOFNC = OFF    // System Clock on CLKO Pin Enable bit->OSCO pin operates as a normal I/O      
+#pragma config SOSCSEL = ON    // Secondary Oscillator External Clock Enable bit->External clock is connected to SOSCO pin (RA4 and RB4 are controlled by I/O port registers)      
+#pragma config FCKSM = CSECMD    // Clock Switching and Fail-Safe Clock Monitor Enable bits->Clock switching is enabled; Fail-safe clock monitor is disabled
 
 // FSEC
-#pragma config CP = OFF    // Code Protection Enable bit->Code protection is disabled
+#pragma config CP = OFF    // Code Protection Enable bit->Code protection is disabled      
 
 #include "mcc.h"
 
 void SYSTEM_Initialize(void)
 {
     PIN_MANAGER_Initialize();
-    OSCILLATOR_Initialize();
     INTERRUPT_Initialize();
+    OSCILLATOR_Initialize();
     UART2_Initialize();
     SPI1_Initialize();
+    MCCP1_TMR_Initialize();
     INTERRUPT_GlobalEnable();
 }
 
@@ -100,23 +101,32 @@ void OSCILLATOR_Initialize(void)
     SYSTEM_RegUnlock();
     // TUN Center frequency; 
     OSCTUN = 0x0;
-    // PLLODIV 1:1; PLLMULT 2x; PLLICLK POSC; 
-    SPLLCON = 0x0;
+    // PLLODIV 1:4; PLLMULT 6x; PLLICLK POSC; 
+    SPLLCON = 0x2030000;
     // SWRST disabled; 
     RSWRST = 0x0;
     // WDTO disabled; GNMI disabled; CF disabled; WDTS disabled; NMICNT 0; LVD disabled; SWNMI disabled; 
     RNMICON = 0x0;
     // SBOREN disabled; VREGS disabled; RETEN disabled; 
     PWRCON = 0x0;
-    // CF No Clock Failure; FRCDIV FRC/1; SLPEN Device will enter Idle mode when a WAIT instruction is issued; NOSC PRI; SOSCEN disabled; CLKLOCK Clock and PLL selections are not locked and may be modified; OSWEN Complete; 
-    OSCCON = 0x200;
+    // configure REFO to request POSC :POSC Errata workaround
+    REFO1CON = 0x9002;
+    // delay for 9 ms :POSC Errata workaround
+    unsigned int start = __builtin_mfc0(_CP0_COUNT, _CP0_COUNT_SELECT);
+    while((__builtin_mfc0(_CP0_COUNT, _CP0_COUNT_SELECT)) - start < (unsigned int)(0.009*8000000/2));
+    //Clear NOSC,CLKLOCK and OSWEN bits :POSC Errata workaround
+    OSCCONCLR = _OSCCON_NOSC_MASK | _OSCCON_CLKLOCK_MASK | _OSCCON_OSWEN_MASK;
+    // CF No Clock Failure; FRCDIV FRC/1; SLPEN Device will enter Idle mode when a WAIT instruction is issued; NOSC SPLL; SOSCEN disabled; CLKLOCK Clock and PLL selections are not locked and may be modified; OSWEN Oscillator switch initiate; 
+    OSCCON = (0x100 | _OSCCON_OSWEN_MASK);
+    // wait for switch   
+    while(OSCCONbits.OSWEN == 1); 
     SYSTEM_RegLock();
     // WDTO disabled; EXTR disabled; POR disabled; SLEEP disabled; BOR disabled; PORIO disabled; IDLE disabled; PORCORE disabled; BCFGERR disabled; CMR disabled; BCFGFAIL disabled; SWR disabled; 
     RCON = 0x0;
-    // ON enabled; DIVSWEN enabled; RSLP disabled; ROSEL SYSCLK; OE disabled; SIDL disabled; RODIV 1; 
-    REFO1CON = 0x18200;
-    // ROTRIM 182; 
-    REFO1TRIM = 0x5B000000;
+    // ON enabled; DIVSWEN enabled; RSLP disabled; ROSEL System PLL; OE disabled; SIDL disabled; RODIV 1; 
+    REFO1CON = 0x18207;
+    // ROTRIM 256; 
+    REFO1TRIM = 0x80000000;
     // SPDIVRDY disabled; 
     CLKSTAT = 0x0;
 }

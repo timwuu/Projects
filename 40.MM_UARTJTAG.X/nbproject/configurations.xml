@@ -13,6 +13,7 @@
         <itemPath>mcc_generated_files/pin_manager.h</itemPath>
         <itemPath>mcc_generated_files/uart2.h</itemPath>
         <itemPath>mcc_generated_files/spi1.h</itemPath>
+        <itemPath>mcc_generated_files/mccp1_tmr.h</itemPath>
       </logicalFolder>
       <itemPath>pic32mm_pe.h</itemPath>
     </logicalFolder>
@@ -32,6 +33,7 @@
         <itemPath>mcc_generated_files/pin_manager.c</itemPath>
         <itemPath>mcc_generated_files/uart2.c</itemPath>
         <itemPath>mcc_generated_files/spi1.c</itemPath>
+        <itemPath>mcc_generated_files/mccp1_tmr.c</itemPath>
       </logicalFolder>
       <itemPath>pic32mm_pe.c</itemPath>
       <itemPath>main.c</itemPath>

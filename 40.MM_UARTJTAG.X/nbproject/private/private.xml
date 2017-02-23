@@ -6,6 +6,9 @@
             <file>file:/D:/GitHub/Projects/40.MM_UARTJTAG.X/pic32mm_pe.h</file>
             <file>file:/D:/GitHub/Projects/40.MM_UARTJTAG.X/mcc_generated_files/spi1.c</file>
             <file>file:/D:/GitHub/Projects/40.MM_UARTJTAG.X/main.c</file>
+            <file>file:/D:/GitHub/Projects/40.MM_UARTJTAG.X/mcc_generated_files/mcc.c</file>
+            <file>file:/D:/GitHub/Projects/40.MM_UARTJTAG.X/mcc_generated_files/uart2.c</file>
+            <file>file:/D:/GitHub/Projects/40.MM_UARTJTAG.X/mcc_generated_files/mccp1_tmr.c</file>
         </group>
     </open-files>
 </project-private>

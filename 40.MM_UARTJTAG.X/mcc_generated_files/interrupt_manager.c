@@ -56,6 +56,16 @@ void INTERRUPT_Initialize (void)
     // Enable Multi Vector Configuration
     INTCONbits.MVEC = 1;
     
+    //    CCPI: CCP 1 Input Capture or Output Compare
+    //    Priority: 1
+        IPC7bits.CCP1IP = 1;
+    //    Sub Priority: 0
+        IPC7bits.CCP1IS = 0;
+    //    CCTI: CCP 1 Timer
+    //    Priority: 1
+        IPC7bits.CCT1IP = 1;
+    //    Sub Priority: 0
+        IPC7bits.CCT1IS = 0;
     //    UERI: UART 2 Error
     //    Priority: 1
         IPC10bits.U2EIP = 1;

@@ -134,8 +134,8 @@ void UART2_Initialize (void)
     U2STA = 0x1400;
     // U2TXREG 0; 
     U2TXREG = 0x0;
-    // BaudRate = 921600; Frequency = 2.94912E7 Hz; BRG 7; 
-    U2BRG = 0x7;
+    // BaudRate = 921600; Frequency = 7377521.613832853 Hz; BRG 1; 
+    U2BRG = 0x1;
 
    IEC1bits.U2RXIE = 1;
 

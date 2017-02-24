@@ -101,8 +101,8 @@ void OSCILLATOR_Initialize(void)
     SYSTEM_RegUnlock();
     // TUN Center frequency; 
     OSCTUN = 0x0;
-    // PLLODIV 1:4; PLLMULT 6x; PLLICLK POSC; 
-    SPLLCON = 0x2030000;
+    // PLLODIV 1:2; PLLMULT 2x; PLLICLK POSC; 
+    SPLLCON = 0x1000000;
     // SWRST disabled; 
     RSWRST = 0x0;
     // WDTO disabled; GNMI disabled; CF disabled; WDTS disabled; NMICNT 0; LVD disabled; SWNMI disabled; 
@@ -116,17 +116,17 @@ void OSCILLATOR_Initialize(void)
     while((__builtin_mfc0(_CP0_COUNT, _CP0_COUNT_SELECT)) - start < (unsigned int)(0.009*8000000/2));
     //Clear NOSC,CLKLOCK and OSWEN bits :POSC Errata workaround
     OSCCONCLR = _OSCCON_NOSC_MASK | _OSCCON_CLKLOCK_MASK | _OSCCON_OSWEN_MASK;
-    // CF No Clock Failure; FRCDIV FRC/1; SLPEN Device will enter Idle mode when a WAIT instruction is issued; NOSC SPLL; SOSCEN disabled; CLKLOCK Clock and PLL selections are not locked and may be modified; OSWEN Oscillator switch initiate; 
-    OSCCON = (0x100 | _OSCCON_OSWEN_MASK);
+    // CF No Clock Failure; FRCDIV FRC/1; SLPEN Device will enter Idle mode when a WAIT instruction is issued; NOSC PRI; SOSCEN disabled; CLKLOCK Clock and PLL selections are not locked and may be modified; OSWEN Oscillator switch initiate; 
+    OSCCON = (0x200 | _OSCCON_OSWEN_MASK);
     // wait for switch   
     while(OSCCONbits.OSWEN == 1); 
     SYSTEM_RegLock();
     // WDTO disabled; EXTR disabled; POR disabled; SLEEP disabled; BOR disabled; PORIO disabled; IDLE disabled; PORCORE disabled; BCFGERR disabled; CMR disabled; BCFGFAIL disabled; SWR disabled; 
     RCON = 0x0;
-    // ON enabled; DIVSWEN enabled; RSLP disabled; ROSEL System PLL; OE disabled; SIDL disabled; RODIV 1; 
-    REFO1CON = 0x18207;
-    // ROTRIM 256; 
-    REFO1TRIM = 0x80000000;
+    // ON enabled; DIVSWEN enabled; RSLP disabled; ROSEL SYSCLK; OE disabled; SIDL disabled; RODIV 1; 
+    REFO1CON = 0x18200;
+    // ROTRIM 182; 
+    REFO1TRIM = 0x5B000000;
     // SPDIVRDY disabled; 
     CLKSTAT = 0x0;
 }

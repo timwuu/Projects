@@ -51,11 +51,11 @@
 #include <stdbool.h>
 #include "interrupt_manager.h"
 #include "exceptions.h"
-#include "mccp1_tmr.h"
 #include "uart2.h"
 #include "spi1.h"
+#include "mccp1_tmr.h"
 
-#define _XTAL_FREQ  22118400UL
+#define _XTAL_FREQ  20000000UL
 
 /**
  * @Param

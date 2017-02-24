@@ -3,7 +3,7 @@
 
 ---------------------------
 
- Fosc:20MHz
+ Fosc:20MHz, PLLMULT: 2x/4x not working
 
  UART:921,600Hz
 

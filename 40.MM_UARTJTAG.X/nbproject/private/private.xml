@@ -5,6 +5,9 @@
         <group>
             <file>file:/D:/GitHub/Projects/40.MM_UARTJTAG.X/mcc_generated_files/spi1.c</file>
             <file>file:/D:/GitHub/Projects/40.MM_UARTJTAG.X/main.c</file>
+            <file>file:/D:/GitHub/Projects/40.MM_UARTJTAG.X/ejtag.c</file>
+            <file>file:/D:/GitHub/Projects/40.MM_UARTJTAG.X/ejtag.h</file>
+            <file>file:/D:/GitHub/Projects/40.MM_UARTJTAG.X/mcc_generated_files/uart2.c</file>
             <file>file:/D:/GitHub/Projects/40.MM_UARTJTAG.X/mcc_generated_files/mcc.c</file>
         </group>
     </open-files>

@@ -45,12 +45,11 @@
 
 #include "mcc_generated_files/mcc.h"
 #include "pic32mm_pe.h"
+#include "ejtag.h"
 
 void UART_PutUint8( uint8_t data);
 void UART_PutUint32( uint32_t data);
 bool checkDeviceStatus( void);
-void P32XferInstruction( uint32_t instruction);
-uint32_t P32XferFastData32b( uint32_t data32);
 
 uint32_t readPEVersion();
 
@@ -59,22 +58,6 @@ void enterSerialExecution();
 void downloadPE();
 
 void sysError( uint32_t);
-
-#define MTAP_IDCODE  0x01
-#define MTAP_SW_MTAP 0x04
-#define MTAP_SW_ETAP 0x05
-#define MTAP_COMMAND 0x07
-
-#define MCHP_STATUS        0x00
-#define MCHP_ASSERT_RST    0xD1
-#define MCHP_DE_ASSERT_RST 0xD0
-#define MCHP_ERASE         0xFC
-
-#define ETAP_ADDRESS   0x08
-#define ETAP_DATA      0x09
-#define ETAP_CONTROL   0x0A
-#define ETAP_EJTAGBOOT 0x0C
-#define ETAP_FASTDATA  0x0E
 
 //#define _SMP 1  //1:end, 0:middle
 
@@ -145,241 +128,6 @@ void sendCommand5b( uint8_t cmd)
     SPI1_Exchange( (uint8_t*)&data[1], (uint8_t*)&data[1] );
     
     SPI1CONbits.ON = 0;
-    
-}
-
-//from <Run Test/Idle>
-//Xfer Data and goto <Run Test/Idle>
-uint8_t xferData8b( uint8_t data8) 
-{
-
-    uint32_t data[2];
-    
-    //Cmd.LSB first
-    // TDI:0000.cccc.cccc.0000
-    // TMS:0100.0000.0001.1000
-    data[0]= 0x04000000; 
-    data[1]= 0x00044000; //JTAG Goto <Run Test/Idle> State
-
-    switch(data8)
-    {
-        case MCHP_STATUS:
-            break;
-        case MCHP_ASSERT_RST:
-            data[0] |= 0x00008000;
-            data[1] |= 0x80880000;
-            break;
-        case MCHP_DE_ASSERT_RST:
-            data[0] |= 0x00000000;
-            data[1] |= 0x80880000;
-            break;
-        case MCHP_ERASE:
-            data[0] |= 0x00000088;
-            data[1] |= 0x88880000;
-            break;
-        default:
-            return 0x00;
-    }
-    
-    
-    uint8_t result;
-    uint8_t _bit;
-    uint32_t _mask;
-    uint32_t i,j;
-    
-    SPI1CONbits.ON = 0;
-
-    SPI1CONbits.CKE = 0;
-     
-    SDO1_SetLow();
-    SCK1_SetLow();    
-    SPI1CONbits.ON = 1;
-    
-    SPI1_Exchange( (uint8_t*)&data[0], (uint8_t*)&data[0] );
-    SPI1_Exchange( (uint8_t*)&data[1], (uint8_t*)&data[1] );
-    
-    SPI1CONbits.ON = 0;
-    
-    result=0x00000000;
-    _bit  =0x00000001;
-    _mask =0x00020000;
-
-    for( i=0,j=0; i<8; i++)
-    {
-        if( data[j] & _mask) result |= _bit;
-        
-        _mask = _mask >> 4;
-        _bit  = _bit << 1;
-        if(_mask==0x0)
-        {
-            _mask=0x20000000;
-            j++;
-        }
-    }
-
-    return result;
-    
-}
-
-//from <Run Test/Idle>
-//Xfer Data and goto <Run Test/Idle>
-uint32_t xferData32b( uint32_t data32) 
-{
-
-    uint32_t data[5];
-    
-    //Cmd.LSB first
-    // TDI:0000.cccc:cccc.cccc:cccc.cccc:cccc.cccc:cccc.0000
-    // TMS:0100.0000:0000.0000.0000.0000:0000.0000:0001.1000
-    // TDO:000d.dddd:dddd.dddd.dddd.dddd:dddd.dddd:ddd0.0000
-    data[0]= 0x04000000; //JTAG Goto <Run Test/Idle> State
-    data[1]= 0x00000000; //JTAG Goto <Run Test/Idle> State
-    data[2]= 0x00000000; //JTAG Goto <Run Test/Idle> State
-    data[3]= 0x00000000; //JTAG Goto <Run Test/Idle> State
-    data[4]= 0x00044000; //JTAG Goto <Run Test/Idle> State
-    //data[5]= 0x00000000; //JTAG Goto <Run Test/Idle> State
-
-    uint32_t result;
-    uint32_t _bit;
-    uint32_t _mask;
-    uint32_t i,j;
-
-    _bit  =0x00000001;
-    _mask =0x00008000;
-
-    for( i=0,j=0; i<32; i++)
-    {
-        if( data32 & _bit) data[j] |= _mask;
-        
-        _mask = _mask >> 4;
-        _bit  = _bit << 1;
-        if(_mask==0x0)
-        {
-            _mask=0x80000000;
-            j++;
-        }
-    }
-    
-    SPI1CONbits.ON = 0;
-
-    SPI1CONbits.CKE = 0;
-     
-    SDO1_SetLow();
-    SCK1_SetLow();    
-    SPI1CONbits.ON = 1;
-    
-    SPI1_Exchange( (uint8_t*)&data[0], (uint8_t*)&data[0] );
-    SPI1_Exchange( (uint8_t*)&data[1], (uint8_t*)&data[1] );
-    SPI1_Exchange( (uint8_t*)&data[2], (uint8_t*)&data[2] );
-    SPI1_Exchange( (uint8_t*)&data[3], (uint8_t*)&data[3] );
-    SPI1_Exchange( (uint8_t*)&data[4], (uint8_t*)&data[4] );
-    //SPI1_Exchange( (uint8_t*)&data[5], (uint8_t*)&data[5] );
-    
-    SPI1CONbits.ON = 0;
-    
-    result=0x00000000;
-    _bit  =0x00000001;
-    _mask =0x00020000;
-
-    for( i=0,j=0; i<32; i++)
-    {
-        if( data[j] & _mask) result |= _bit;
-        
-        _mask = _mask >> 4;
-        _bit  = _bit << 1;
-        if(_mask==0x0)
-        {
-            _mask=0x20000000;
-            j++;
-        }
-    }
-    
-    return result;
-    
-}
-
-//from <Run Test/Idle>
-//prerequisite ETAP_FASTDATA
-//Xfer Fast Data and goto <Run Test/Idle>
-uint32_t P32XferFastData32b( uint32_t data32) 
-{
-
-    uint32_t data[5];
-    
-    // Cmd.LSB first, p:PrAcc
-    // TDI:0000.cccc:cccc.cccc:cccc.cccc:cccc.cccc:cccc.0000
-    // TMS:1000.0000:0000.0000.0000.0000:0000.0000:0001.1000
-    // TDO:00pd.dddd:dddd.dddd.dddd.dddd:dddd.dddd:ddd0.0000
-    data[0]= 0x40000000; //JTAG Goto <Run Test/Idle> State
-    data[1]= 0x00000000; //JTAG Goto <Run Test/Idle> State
-    data[2]= 0x00000000; //JTAG Goto <Run Test/Idle> State
-    data[3]= 0x00000000; //JTAG Goto <Run Test/Idle> State
-    data[4]= 0x00044000; //JTAG Goto <Run Test/Idle> State
-    //data[5]= 0x00000000; //JTAG Goto <Run Test/Idle> State
-
-    uint32_t result;
-    uint32_t _bit;
-    uint32_t _mask;
-    uint32_t i,j;
-
-    _bit  =0x00000001;
-    _mask =0x00008000;
-
-    for( i=0,j=0; i<32; i++)
-    {
-        if( data32 & _bit) data[j] |= _mask;
-        
-        _mask = _mask >> 4;
-        _bit  = _bit << 1;
-        if(_mask==0x0)
-        {
-            _mask=0x80000000;
-            j++;
-        }
-    }
-    
-    SPI1CONbits.ON = 0;
-
-    SPI1CONbits.CKE = 0;
-     
-    SDO1_SetLow();
-    SCK1_SetLow();    
-    SPI1CONbits.ON = 1;
-    
-    SPI1_Exchange( (uint8_t*)&data[0], (uint8_t*)&data[0] );
-    SPI1_Exchange( (uint8_t*)&data[1], (uint8_t*)&data[1] );
-    SPI1_Exchange( (uint8_t*)&data[2], (uint8_t*)&data[2] );
-    SPI1_Exchange( (uint8_t*)&data[3], (uint8_t*)&data[3] );
-    SPI1_Exchange( (uint8_t*)&data[4], (uint8_t*)&data[4] );
-    //SPI1_Exchange( (uint8_t*)&data[5], (uint8_t*)&data[5] );
-    
-    SPI1CONbits.ON = 0;
-
-    //check PrAcc bit
-    if( (data[0] & 0x00200000)==0 )
-    {
-        sysError(0xE0E0E0E0);
-        return 0x00;
-    }
-    
-    result=0x00000000;
-    _bit  =0x00000001;
-    _mask =0x00020000;
-
-    for( i=0,j=0; i<32; i++)
-    {
-        if( data[j] & _mask) result |= _bit;
-        
-        _mask = _mask >> 4;
-        _bit  = _bit << 1;
-        if(_mask==0x0)
-        {
-            _mask=0x20000000;
-            j++;
-        }
-    }
-    
-    return result;
     
 }
 
@@ -819,45 +567,22 @@ void downloadPE()
     setRunTestIdleMode();
 
     sendCommand5b( ETAP_FASTDATA);
-    P32XferFastData32b( 0xA0000300);
-    P32XferFastData32b( PIC32MM_PE_SIZE);
+    vP32XferFastData32b( 0xA0000300);
+    vP32XferFastData32b( PIC32MM_PE_SIZE);
     
     
     // step 4.B
     for( i=0; i<PIC32MM_PE_SIZE; i++)
-        P32XferFastData32b(PIC32_PE_MM[i]);
+        vP32XferFastData32b(PIC32_PE_MM[i]);
     
     // step 5. Jump to PE
-    P32XferFastData32b( 0x00000000);
-    P32XferFastData32b( 0xDEAD0000);
+    vP32XferFastData32b( 0x00000000);
+    vP32XferFastData32b( 0xDEAD0000);
     
     
 }
 
-void P32XferInstruction( uint32_t instruction)
-{
-    uint32_t praccbyte;
-    uint32_t timeout=2550;
-    
-    sendCommand5b(ETAP_CONTROL);
-    do
-    {   //timijk ?0x0004D000 P32XferData32(0x00, 0x04, 0xD0, 0x00, 0);
-        praccbyte = xferData32b(0x0004D000);  
-    } while (((praccbyte & 0x00040000) == 0) && --timeout);
-    
-    if (timeout==0) return sysError(praccbyte);
-    
-    sendCommand5b(ETAP_DATA);          // ETAP_DATA
-    // actual instruction:
-    xferData32b( instruction);
-    
-    sendCommand5b(ETAP_CONTROL);
-    xferData32b( 0x0000C000);
 
-    //while( UART2_TransmitBufferIsFull());    
-    //UART2_Write('o');
-
-}
 
 uint32_t readPEVersion()
 {

@@ -84,15 +84,15 @@
 #define UARTNUM     1       //Which device UART to use
 
 #ifndef USE_AUTOBAUD
-    #define BAUDRATE    38400  //19200 // 38400
+    #define BAUDRATE    19200 // 38400
 #endif
 
 #define MAX_PACKET_SIZE		261	//Max packet size
 
 //USER_PROG_RESET should be the location of a pointer to the start of user code, 
 //not the location of the first instruction of the user application.
-#define USER_PROG_RESET         0x100  //User app reset vector location
-#define DELAY_TIME_ADDR 	0x102	//BL entry delay location
+#define USER_PROG_RESET     0x100  //User app reset vector location
+#define DELAY_TIME_ADDR 	0xC02	//BL entry delay location
 
 #define BOOT_ADDR_LOW 		0x400	//start of BL protection area
 #ifndef USE_AES

@@ -35,6 +35,8 @@ __DATA_LENGTH = 0x2000;
 __CODE_BASE = 0xC00;   /* APP Starting Location */
 __CODE_LENGTH = 0xABF6-0xC00;
 
+__BL_DELAY_TIME     = 0x020;
+
 
 /*
 ** ==================== Section Map ======================
@@ -58,6 +60,44 @@ SECTIONS
   ** Vector table source code appears below.
   */
 
+
+  /*
+  ** ISR Table
+  */
+
+  .isrtable __CODE_BASE :
+  {
+    /* RESET: instruction to prevent runaway code */
+    LONG(0x00FE0000);
+
+    /* Timeout Value */
+    LONG(ABSOLUTE(__BL_DELAY_TIME));
+
+    /* goto __reset */
+    SHORT(ABSOLUTE(__reset));
+    SHORT(0x04);  
+    SHORT((ABSOLUTE(__reset) >> 16) & 0x7F);
+    SHORT(0);
+
+    /* goto __U1RXInterrupt */
+    SHORT(ABSOLUTE(__U1RXInterrupt));
+    SHORT(0x04);  
+    SHORT((ABSOLUTE(__U1RXInterrupt) >> 16) & 0x7F);
+    SHORT(0);
+
+    /* goto __USB1Interrupt */
+    SHORT(ABSOLUTE(__USB1Interrupt));
+    SHORT(0x04);  
+    SHORT((ABSOLUTE(__USB1Interrupt) >> 16) & 0x7F);
+    SHORT(0);
+
+    /* goto __T3Interrupt */
+    SHORT(ABSOLUTE(__T3Interrupt));
+    SHORT(0x04);  
+    SHORT((ABSOLUTE(__T3Interrupt) >> 16) & 0x7F);
+    SHORT(0);
+
+  } >program
 
   /*
   ** User Code and Library Code

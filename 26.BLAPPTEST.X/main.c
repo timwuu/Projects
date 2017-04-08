@@ -49,7 +49,7 @@ void setup()
 
     TMR3 = 0;
 
-    PR3 = 20000;
+    PR3 = 31249;
     T3CON = TIMER_ON |
             STOP_TIMER_IN_IDLE_MODE |
             TIMER_SOURCE_INTERNAL |

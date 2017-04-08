@@ -40,10 +40,10 @@ __CODE_BASE = 0x400;     /* starting location of BL */
 __CODE_LENGTH = 0x800;
 
 __BL_DELAY_TIME     = 0x020;
-__APP_reset         = 0xC02;
-__APP_U1RXInterrupt = 0xC06;
-__APP_USB1Interrupt = 0xC0A;
-__APP_T3Interrupt   = 0xC0E;
+__APP_reset         = 0xC04;
+__APP_U1RXInterrupt = 0xC08;
+__APP_USB1Interrupt = 0xC0C;
+__APP_T3Interrupt   = 0xC10;
 
 /*
 ** ==================== Section Map ======================

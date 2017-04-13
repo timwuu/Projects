@@ -1,0 +1,9 @@
+D:\GitHub\Projects\28.Bootloader\Bootloader\bin\Release\BT HC04.exe.config
+D:\GitHub\Projects\28.Bootloader\Bootloader\bin\Release\BT HC04.exe
+D:\GitHub\Projects\28.Bootloader\Bootloader\bin\Release\BT HC04.pdb
+D:\GitHub\Projects\28.Bootloader\Bootloader\obj\Release\Bootloader.csprojResolveAssemblyReference.cache
+D:\GitHub\Projects\28.Bootloader\Bootloader\obj\Release\BT_HC04.Form1.resources
+D:\GitHub\Projects\28.Bootloader\Bootloader\obj\Release\BT_HC04.Properties.Resources.resources
+D:\GitHub\Projects\28.Bootloader\Bootloader\obj\Release\Bootloader.csproj.GenerateResource.Cache
+D:\GitHub\Projects\28.Bootloader\Bootloader\obj\Release\BT HC04.exe
+D:\GitHub\Projects\28.Bootloader\Bootloader\obj\Release\BT HC04.pdb

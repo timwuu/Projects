@@ -270,7 +270,7 @@ namespace BT_HC04
 
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
-
+            setCOMPortBaudRate(toolStripMenuItem2.Text);
         }
 
 
@@ -314,11 +314,8 @@ namespace BT_HC04
 
         private void toolStripMenuItem3_Click(object sender, EventArgs e)
         {
-            toolStripDropDownButton1.Text = toolStripMenuItem3.Text;
+            setCOMPortBaudRate(toolStripMenuItem3.Text);
         }
-
-
-
 
         private void btnWTFlash_Click(object sender, EventArgs e)
         {
@@ -507,6 +504,32 @@ namespace BT_HC04
             if (serialPort1.IsOpen) serialPort1.Close();
             serialPort1.PortName = name;
             Properties.Settings.Default.Save(); ;
+        }
+
+        private void setCOMPortBaudRate( string name)
+        {
+            toolStripDropDownButton1.Text = name;
+            serialPort1.BaudRate = Convert.ToInt32(name);
+        }
+
+        private void cOM6ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            setCOMPortName(cOM6ToolStripMenuItem.Text);
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            setCOMPortBaudRate(toolStripMenuItem1.Text);
+        }
+
+        private void toolStripMenuItem9_Click(object sender, EventArgs e)
+        {
+            setCOMPortBaudRate(toolStripMenuItem9.Text);
+        }
+
+        private void toolStripMenuItem10_Click(object sender, EventArgs e)
+        {
+            setCOMPortBaudRate(toolStripMenuItem10.Text);
         }
     }
 }

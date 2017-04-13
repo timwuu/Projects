@@ -68,6 +68,10 @@
             this.lbUserIDs = new System.Windows.Forms.Label();
             this.lbDevice = new System.Windows.Forms.Label();
             this.bkgWritePM = new System.ComponentModel.BackgroundWorker();
+            this.cOM6ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem9 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem10 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -236,7 +240,7 @@
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(217, 17);
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(186, 17);
             this.toolStripStatusLabel1.Spring = true;
             this.toolStripStatusLabel1.Text = "Hex File";
             // 
@@ -250,8 +254,10 @@
             this.toolStripDropDownButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolStripDropDownButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem3,
-            this.toolStripMenuItem2});
-            this.toolStripDropDownButton1.Enabled = false;
+            this.toolStripMenuItem2,
+            this.toolStripMenuItem1,
+            this.toolStripMenuItem9,
+            this.toolStripMenuItem10});
             this.toolStripDropDownButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton1.Image")));
             this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
@@ -281,7 +287,8 @@
             this.cOM2ToolStripMenuItem,
             this.cOM3ToolStripMenuItem,
             this.cOM4ToolStripMenuItem,
-            this.cOM5ToolStripMenuItem});
+            this.cOM5ToolStripMenuItem,
+            this.cOM6ToolStripMenuItem});
             this.toolStripDropDownButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton2.Image")));
             this.toolStripDropDownButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripDropDownButton2.Name = "toolStripDropDownButton2";
@@ -413,6 +420,34 @@
             this.bkgWritePM.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bkgWritePM_ProgressChanged);
             this.bkgWritePM.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bkgWritePM_RunWorkerCompleted);
             // 
+            // cOM6ToolStripMenuItem
+            // 
+            this.cOM6ToolStripMenuItem.Name = "cOM6ToolStripMenuItem";
+            this.cOM6ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.cOM6ToolStripMenuItem.Text = "COM6";
+            this.cOM6ToolStripMenuItem.Click += new System.EventHandler(this.cOM6ToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem1.Text = "38400";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            // 
+            // toolStripMenuItem9
+            // 
+            this.toolStripMenuItem9.Name = "toolStripMenuItem9";
+            this.toolStripMenuItem9.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem9.Text = "57600";
+            this.toolStripMenuItem9.Click += new System.EventHandler(this.toolStripMenuItem9_Click);
+            // 
+            // toolStripMenuItem10
+            // 
+            this.toolStripMenuItem10.Name = "toolStripMenuItem10";
+            this.toolStripMenuItem10.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem10.Text = "115200";
+            this.toolStripMenuItem10.Click += new System.EventHandler(this.toolStripMenuItem10_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -483,6 +518,10 @@
         private System.Windows.Forms.Label lbDevice;
         private System.Windows.Forms.CheckBox cbEraseBeforeWrite;
         private System.ComponentModel.BackgroundWorker bkgWritePM;
+        private System.Windows.Forms.ToolStripMenuItem cOM6ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem9;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem10;
     }
 }
 
